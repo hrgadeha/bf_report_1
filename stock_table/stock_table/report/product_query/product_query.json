@@ -1,0 +1,46 @@
+{
+ "add_total_row": 0, 
+ "creation": "2019-03-23 20:27:29.441858", 
+ "disable_prepared_report": 1, 
+ "disabled": 1, 
+ "docstatus": 0, 
+ "doctype": "Report", 
+ "idx": 0, 
+ "is_standard": "Yes", 
+ "modified": "2019-03-23 21:43:07.957685", 
+ "modified_by": "Administrator", 
+ "module": "Stock Table", 
+ "name": "Product Query", 
+ "owner": "Administrator", 
+ "prepared_report": 0, 
+ "query": "select \n\titem_code as 'Item Code:Link/Item:100',\n\titem_name as 'Item Name:Data:150',\n\tdescription as 'description:Data:200',\n\tstock_uom as 'UOM:Link/UOM:80',\n\tstandard_rate as 'Rate:Currency:80',\n\twholesale_rate as 'Wholesale Rate:Currency:80',\n    (select rate from `tabPurchase Invoice Item`,`tabPurchase Invoice` \nwhere `tabPurchase Invoice Item`.parent = `tabPurchase Invoice`.name and item_code = `tabItem`.item_code  \norder by `tabPurchase Invoice`.creation desc limit 1) as 'Last Purchase Rate:Currency:80',\n\t(select valuation_rate from `tabStock Ledger Entry` where item_code = `tabItem`.item_code and is_cancelled='No' order by posting_date desc, posting_time desc, name desc limit 1) as 'Valuation Rate:Currency:80',\n\t(select actual_qty from `tabBin` where item_code = `tabItem`.item_code and warehouse = 'SN - B')  as 'SN Stock:Float:100',\n\t(select actual_qty from `tabBin` where item_code = `tabItem`.item_code and warehouse = 'AH - B')  as 'AH Stock:Float:100',\n\t(select actual_qty from `tabBin` where item_code = `tabItem`.item_code and warehouse = 'MN - B')  as 'MN Stock:Float:100',\n\t(select actual_qty from `tabBin` where item_code = `tabItem`.item_code and warehouse = 'SZ - B')  as 'SZ Stock:Float:100',\n\t(select actual_qty from `tabBin` where item_code = `tabItem`.item_code and warehouse = 'SH - B')  as 'SH Stock:Float:100',\n\t(select sum(actual_qty) from `tabBin` where item_code = `tabItem`.item_code and (warehouse = 'SN - B' or warehouse = 'SZ - B' or warehouse = 'AH - B' or warehouse = 'MN - B' or warehouse = 'SH - B'))  as 'Total Stock:Float:100',\n    (select ordered_qty from `tabBin` where item_code =  `tabItem`.item_code order by name limit 1) as 'Stock In Transit:Float:100'\n\tfrom `tabItem`;", 
+ "ref_doctype": "Item", 
+ "report_name": "Product Query", 
+ "report_type": "Query Report", 
+ "roles": [
+  {
+   "role": "Item Manager"
+  }, 
+  {
+   "role": "Stock Manager"
+  }, 
+  {
+   "role": "Stock User"
+  }, 
+  {
+   "role": "Sales User"
+  }, 
+  {
+   "role": "Purchase User"
+  }, 
+  {
+   "role": "Maintenance User"
+  }, 
+  {
+   "role": "Accounts User"
+  }, 
+  {
+   "role": "Manufacturing User"
+  }
+ ]
+}

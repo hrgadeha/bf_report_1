@@ -1,0 +1,52 @@
+<br><br>
+<style>
+.print-format {
+	padding: 4mm;
+	font-size: 8.0pt !important;
+}
+.print-format td {
+	vertical-align:middle !important;
+}
+</style>
+<h1 class="text-center" style="margin-top:0">BAB-E-FAKHRI CO.</h1>
+<p class="text-center" style="margin-top:0">P.O.BOX 42483, 70655 SHUWAIKH,KUWAIT<br>TEL:24847210 / 24836419 FAX: 24836964 / 23981796</p>
+<h2 class="text-center" style="margin-top:0">STATEMENT OF ACCOUNTS</h2>
+<hr>
+<h3>Sales Invoice</h3>
+<hr>
+<p>Customer Name : {%= filters.customer_name %}</p>
+<hr>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th style="width:5%">{%= __("Sr No") %}</th>
+      <th style="width:15%">{%= __("Voucher No") %}</th>
+      <th style="width:12%">{%= __("Posting Date") %}</th>
+      <th style="width:10%">{%= __("Age (Days)") %}</th>
+      <th style="width:12%">{%= __("Customer LPO") %}</th>
+      <th style="width:12%">{%= __("Net Total") %}</th>
+      <th style="width:12%">{%= __("Total Advance") %}</th>
+      <th style="width:10%; text-align: right">{%=  __("Credit Note") %}</th>
+      <th style="width:12%">{%= __("Outstanding Amount") %}</th>
+    </tr>
+  </thead>
+  <tbody>
+         {% for(var i=0, l=data.length; i<l; i++) { %}
+             <tr>
+                 <td style="text-align: center;">{%= i+1 %}</td>
+		 {% if data[i][__("voucher_no")] %}
+                 <td>{%= data[i]["voucher_no"] %}</td>
+		 {% } else { %}
+	  	 <td>{%= __("Total") %}</td>
+		 {% } %}	
+                 <td>{%= dateutil.str_to_user(data[i][__("posting_date")]) %}</td>
+		 <td style="text-align: right">{%= data[i][__("Age (Days)")] %}</td>
+                 <td>{%= data[i][__("po_no")] %}</td>
+		 <td>{%= format_currency(data[i]["invoiced_amount"], data[i]["currency"]) %}</td>
+		 <td>{%= format_currency(data[i]["paid_amount"], data[i]["currency"]) %}</td>
+		 <td style="text-align: right">{%= format_currency(data[i]["credit_note"], data[i]["currency"]) %}</td>
+          	 <td>{%= format_currency(data[i]["outstanding_amount"], data[i]["currency"]) %}</td>
+             </tr>
+         {% } %}
+     </tbody>
+ </table>
